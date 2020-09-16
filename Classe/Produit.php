@@ -7,7 +7,7 @@ class Produit
    private $description;
    private $emailContact;
    private $categorie;
-   private $pdo;
+   private PDO $pdo;
 
    /**
     * On initialise la connexion à la base
@@ -17,7 +17,7 @@ class Produit
    public function __construct()
    {
       try {
-         $pdo = new PDO("mysql:host=localhost;dbname=LEBONCOIN,dev,dev");
+         $pdo = new PDO("mysql:host=localhost;dbname=LEBONCOIN",'dev','dev');
       } catch (Exception $e) {
          die("Erreur : La base de données n'éxiste pas -- Merci de la créer");
       }
@@ -55,8 +55,9 @@ class Produit
     */
    public function read(Int $id)
    {
-      $resultatRequete = [];
-      return json_encode($resultatRequete);
+      $select = $this->pdo->prepare("SELECT * FROM produits WHERE id = :id");
+      $resultat = $select->execute(array(':id' => $id));
+      return $resultat;
    }
 
    /**
@@ -68,4 +69,14 @@ class Produit
    {
       // INSERT INTO produits (nom, desc, ...) VALUES ($this->nom, $this->desc)
    }
+
+   /**
+    * Liste de tous les produits
+    *
+    * @return void
+    */
+    public function all()
+    {
+         return $this->pdo->query("SELECT * FROM produits WHERE 1")->fetchAll();
+    }
 }
