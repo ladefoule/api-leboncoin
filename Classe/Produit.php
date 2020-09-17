@@ -32,8 +32,11 @@ class Produit
     */
    public function init(Array $array)
    {
-      // UPDATE produits SET $array['nom'] = $this->nom, ...
-      // LE FAIRE AVEC PREPARE
+      $this->nom = $array['nom'];
+      $this->prix = $array['prix'];
+      $this->categorie = $array['categorie'];
+      $this->emailContact = $array['emailContact'];
+      $this->description = $array['description'];
    }
 
    /**
@@ -45,11 +48,9 @@ class Produit
    public function delete(Int $id = 0)
    {
       if($id == 0)
-         return $this->pdo->query("DELETE produits WHERE 1");
+         return $this->pdo->query("DELETE FROM produits WHERE 1");
       else{
-         $stmt = $this->pdo->prepare("DELETE produits WHERE id = :id");
-         var_dump($stmt);
-         exit();
+         $stmt = $this->pdo->prepare("DELETE FROM produits WHERE id = :id");
          return $stmt->execute([':id' => $id]);
       }
    }
@@ -63,7 +64,9 @@ class Produit
    public function read(Int $id)
    {
       $stmt = $this->pdo->prepare("SELECT * FROM produits WHERE id = :id");
-      $stmt->execute([':id' => $id]);
+      $result = $stmt->execute([':id' => $id]);
+      if(!$result)
+         return false;
       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
@@ -74,7 +77,14 @@ class Produit
     */
    public function save()
    {
-      // INSERT INTO produits (nom, desc, ...) VALUES ($this->nom, $this->desc)
+      $stmt = $this->pdo->prepare("INSERT INTO produits SET nom = :nom, description = :description, email_contact = :emailContact, prix = :prix, categorie = :categorie");
+      $result = $stmt->execute([
+         'nom' => $this->nom,
+         'prix' => $this->prix,
+         'categorie' => $this->categorie,
+         'emailContact' => $this->emailContact,
+         'description' => $this->description
+      ]);
    }
 
    /**

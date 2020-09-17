@@ -25,12 +25,39 @@ $produit = new Produit();
 
 switch ($method) {
    case 'GET':
-      header('HTTP/1.0 200 OK');
       if($id == NONRENSEIGNE){
          $produits = $produit->all();
          echo json_encode($produits);
       }else{
-         echo json_encode($produit->read($id));
+         $resultat = $produit->read($id);
+         if($resultat){
+            header('HTTP/1.0 200 OK');
+            echo json_encode($resultat);
+         }else {
+            header('HTTP/1.0 400 Bad Request');
+            echo json_encode('Produit introuvable.');
+         }
+      }
+      break;
+
+   case 'POST':
+      if($id != NONRENSEIGNE){
+         header('HTTP/1.0 400 Bad Request');
+         echo json_encode('Mauvaise requête.');
+      }else{
+         $array = [
+            'nom' => $_POST['nom'] ?? NULL,
+            'prix' => $_POST['prix'] ?? NULL,
+            'categorie' => $_POST['categorie'] ?? NULL,
+            'emailContact' => $_POST['email_contact'] ?? NULL,
+            'description' => $_POST['description'] ?? NULL
+         ];
+
+         $produit->init($array);
+         $produit->save();
+
+         header('HTTP/1.0 200 OK');
+         echo json_encode('Insertion OK.');
       }
       break;
 

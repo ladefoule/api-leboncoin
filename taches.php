@@ -12,8 +12,8 @@ Ajout d'un objet en POST : traitement des champs reçus
 Ajout d'un objet en POST : ecrire de la requete SQL (prepare)
 Ajout d'un objet en POST : réponse à renvoyer
 <!-- Tester les URL, methodes, codes retours -->
-Suppression d'un objet
-1 Joker pour aide
+<!-- Suppression d'un objet -->
+<!-- 1 Joker pour aide -->
 Ecrire la requete SQL qui permet d'afficher les objets avec un prix Min et Max
 Ecrire le code PHP pour les prix min et max
 <!-- Tester les URL, methodes, codes retours -->
