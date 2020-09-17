@@ -87,6 +87,23 @@ class Produit
       ]);
    }
 
+   public function minMax($min, $max)
+   {
+      if($min != -1 && $max == -1){
+         $stmt = $this->pdo->prepare("SELECT * FROM produits WHERE prix >= :min order by prix asc");
+         $result = $stmt->execute([':min' => $min]);
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }else if($max != -1 && $min == -1){
+         $stmt = $this->pdo->prepare("SELECT * FROM produits WHERE prix <= :max order by prix asc");
+         $result = $stmt->execute([':max' => $max]);
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }else {
+         $stmt = $this->pdo->prepare("SELECT * FROM produits WHERE prix <= :max AND prix >= :min order by prix asc");
+         $result = $stmt->execute([':max' => $max, ':min' => $min]);
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+   }
+
    /**
     * Liste de tous les produits
     *

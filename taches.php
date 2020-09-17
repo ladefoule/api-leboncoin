@@ -8,9 +8,9 @@
 <!-- Inserer des données de test dans la table -->
 <!-- GET tous les objets (select * from produit) -->
 <!-- GET ID -->
-Ajout d'un objet en POST : traitement des champs reçus
-Ajout d'un objet en POST : ecrire de la requete SQL (prepare)
-Ajout d'un objet en POST : réponse à renvoyer
+<!-- Ajout d'un objet en POST : traitement des champs reçus -->
+<!-- Ajout d'un objet en POST : ecrire de la requete SQL (prepare) -->
+<!-- Ajout d'un objet en POST : réponse à renvoyer -->
 <!-- Tester les URL, methodes, codes retours -->
 <!-- Suppression d'un objet -->
 <!-- 1 Joker pour aide -->

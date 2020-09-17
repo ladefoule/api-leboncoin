@@ -1,4 +1,9 @@
 <?php 
+
+// var_dump($_SERVER);
+
+// header('Access-Control-Allow-Methods: GET, POST');
+
 require './Classe/Produit.php';
 
 // On définit le header de retour qui sera du JSON
@@ -18,6 +23,8 @@ header('Content-Type: application/json');
 const NONRENSEIGNE = 'alpha';
 
 $id = $_GET['id'] ?? NONRENSEIGNE;
+$min = $_GET['min'] ?? -1;
+$max = $_GET['max'] ?? -1;
 
 // Pour récupérer le méthode de la requête
 $method = $_SERVER['REQUEST_METHOD'];
@@ -26,7 +33,10 @@ $produit = new Produit();
 switch ($method) {
    case 'GET':
       if($id == NONRENSEIGNE){
-         $produits = $produit->all();
+         if($min == -1 && $max == -1 )
+            $produits = $produit->all();
+         else
+            $produits = $produit->minMax($min, $max);
          echo json_encode($produits);
       }else{
          $resultat = $produit->read($id);
