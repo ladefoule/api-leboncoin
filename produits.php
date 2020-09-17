@@ -25,29 +25,34 @@ $produit = new Produit();
 
 switch ($method) {
    case 'GET':
-      // if($method != 'GET'){
-      //    header('HTTP/1.0 401 Unauthorized');
-      //    echo json_encode("401 Unauthorized");
-      //    exit();
-      // }
       header('HTTP/1.0 200 OK');
       if($id == NONRENSEIGNE){
          $produits = $produit->all();
          echo json_encode($produits);
       }else{
-         // echo json_encode('LISTE D\'UN PRODUIT : => ');
-         header('Content-Type: application/html');
-         var_dump($produit->read($id));
-         exit();
+         echo json_encode($produit->read($id));
       }
       break;
 
    case 'DELETE':
-      header('HTTP/1.0 200 OK');
       if($id == NONRENSEIGNE){
-         echo json_encode('SUPPRESSION DE TOUS LES PRODUITS : => ');
+         $ok = $produit->delete();
+         if($ok){
+            header('HTTP/1.0 200 OK');
+            echo json_encode("Suppression de tous les produits.");
+         }else {
+            header('HTTP/1.0 400 Bad Request');
+            echo json_encode("Erreur lors de la suppression.");
+         }
       }else{
-         echo json_encode('SUPPRESSION D\'UN PRODUIT : => ');
+         $ok = $produit->delete($id);
+         if($ok){
+            header('HTTP/1.0 200 OK');
+            echo json_encode("Suppression de l'ID : $id");
+         }else {
+            header('HTTP/1.0 400 Bad Request');
+            echo json_encode("Produit introuvable.");
+         }
       }
       break;
    

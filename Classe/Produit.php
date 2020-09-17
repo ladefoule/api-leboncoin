@@ -42,9 +42,16 @@ class Produit
     * @param Int $id
     * @return void
     */
-   public function delete(Int $id)
+   public function delete(Int $id = 0)
    {
-      // DELETE FROM produits WHERE id = $id
+      if($id == 0)
+         return $this->pdo->query("DELETE produits WHERE 1");
+      else{
+         $stmt = $this->pdo->prepare("DELETE produits WHERE id = :id");
+         var_dump($stmt);
+         exit();
+         return $stmt->execute([':id' => $id]);
+      }
    }
 
    /**
@@ -55,9 +62,9 @@ class Produit
     */
    public function read(Int $id)
    {
-      $select = $this->pdo->prepare("SELECT * FROM produits WHERE id = :id");
-      $resultat = $select->execute(array(':id' => $id));
-      return $resultat;
+      $stmt = $this->pdo->prepare("SELECT * FROM produits WHERE id = :id");
+      $stmt->execute([':id' => $id]);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
    /**
@@ -77,6 +84,6 @@ class Produit
     */
     public function all()
     {
-         return $this->pdo->query("SELECT * FROM produits WHERE 1")->fetchAll();
+         return $this->pdo->query("SELECT * FROM produits WHERE 1")->fetchAll(PDO::FETCH_ASSOC);
     }
 }
